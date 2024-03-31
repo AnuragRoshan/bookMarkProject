@@ -12,7 +12,7 @@ function App() {
     note: '',
     collection_name: '',
     tags: '',
-    url: 'ksdfnskdfn',
+    url: '',
     is_favorite: false
   });
   const [tags, setTags] = useState([]);

@@ -15,8 +15,6 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/bookmark/:origin/:id" element={<Collections />} />
-            {/* <Route path="/about" element={<About />} />
-          <Route path="/metaConn" element={<Metamask />} /> */}
           </Routes>
         </div>
       </Router>
