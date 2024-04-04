@@ -1,47 +1,50 @@
-import React, { useState } from "react";
-import {
-  FaTh,
-  FaBars,
-  FaUserAlt,
-  FaRegChartBar,
-  FaCommentAlt,
-  FaShoppingBag,
-  FaBitcoin,
-} from "react-icons/fa";
-
+import React, { useEffect, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
-import { SiAboutdotme } from "react-icons/si";
-import { GrLink } from "react-icons/gr";
-import { FaChartSimple } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { IoBookmarksOutline, IoBookmarksSharp } from "react-icons/io5";
 import { FaRegFolder } from "react-icons/fa";
 import { IoIosFolder } from "react-icons/io";
-import { HiOutlineDotsVertical } from "react-icons/hi";
+import axios from "axios";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(isOpen);
   const [activeLink, setActiveLink] = useState("/");
-
+  const [collectionList, setcollectionList] = useState([]);
   const handleLinkClick = (path) => {
     setActiveLink(path);
   };
 
+  useEffect(() => {
+    getCollectionList();
+  }, []);
+
+  const getCollectionList = async () => {
+    const user_id = "6608f182472c4f5e0dda23b7";
+    const data = await axios.post(
+      "http://localhost:5000/api/v1/collections/fetch",
+      {
+        user_id,
+      }
+    );
+    console.log(data.data.collection_list);
+    setcollectionList(data.data.collection_list);
+  };
+
   const menuItem = [
-    {
-      // bookmark/:origin/:id
-      path: "/bookmark/collection/chart",
-      name: "collection1",
-    },
-    {
-      path: "bookmark/collection/crypto",
-      name: "collection2",
-    },
-    {
-      path: "bookmark/collection/hello",
-      name: "collection3",
-    },
+    //   {
+    //     // bookmark/:origin/:id
+    //     path: "/bookmark/collection/collection1",
+    //     name: "collection1",
+    //   },
+    //   {
+    //     path: "bookmark/collection/collection2",
+    //     name: "collection2",
+    //   },
+    //   {
+    //     path: "bookmark/collection/collection3",
+    //     name: "collection3",
+    //   },
   ];
 
   return (
@@ -80,18 +83,18 @@ const Sidebar = () => {
             All Bookmarks
           </div>
         </Link>
-        {menuItem && menuItem.length > 0 ? (
+        {collectionList && collectionList.length > 0 ? (
           <>
             <div className="collections">Collections</div>
-            {menuItem.map((item, index) => (
+            {collectionList.map((item, index) => (
               <Link
-                to={item.path}
+                to={`/bookmark/collection/${item}`}
                 key={index}
                 className={activeLink === item.path ? "active link" : "link"}
-                onClick={() => handleLinkClick(item.path)}
+                onClick={() => handleLinkClick(`/bookmark/collection/${item}`)}
               >
                 <div className="icon">
-                  {activeLink === item.path ? (
+                  {activeLink === `/bookmark/collection/${item}` ? (
                     <div className="icon">
                       <IoIosFolder />
                     </div>
@@ -106,7 +109,7 @@ const Sidebar = () => {
                   style={{ display: isOpen ? "block" : "none" }}
                   className="link_text"
                 >
-                  {item.name}
+                  {item}
                 </div>
                 {/* <div className="link_dot">
                   <HiOutlineDotsVertical onClick={{}} />

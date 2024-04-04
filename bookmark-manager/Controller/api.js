@@ -336,7 +336,7 @@ exports.renameTag = async (req, res) => {
 exports.fetchBookmark = async (req, res) => {
     try {
         const { user_id, all_bookmark, favorite, collection_name, tag_name, without_tag, search } = req.body;
-        console.log(collection_name, tag_name, without_tag, search);
+        console.log(req.body);
         let query = { user_id };
         if (!all_bookmark) {
             if (favorite) {
@@ -355,7 +355,7 @@ exports.fetchBookmark = async (req, res) => {
                 ];
             }
         }
-        console.log(query);
+        // console.log(query);
         const bookmarks = await Bookmarks.find(query);
         // Respond with the list of bookmarks
         res.json({ bookmark_list: bookmarks });

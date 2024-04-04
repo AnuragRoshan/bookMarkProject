@@ -3,7 +3,17 @@
   "version": "0.1",
   "description": "A simple bookmark manager",
   "manifest_version": 3,
-  "permissions": ["activeTab", "scripting", "tabs", "http://localhost:3000/*"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs",
+    "http://localhost:3000/*",
+    "storage",
+    "activeTab",
+    "webNavigation",
+    "webRequest",
+    "webRequestBlocking"
+  ],
   "action": {
     "default_popup": "index.html",
     "default_icon": {

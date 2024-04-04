@@ -13,7 +13,7 @@ function App() {
     collection_name: '',
     tags: '',
     url: '',
-    is_favorite: false
+    is_favorite: false,
   });
   const [tags, setTags] = useState([]);
   const [collections, setCollections] = useState([
@@ -30,9 +30,17 @@ function App() {
       }));
     });
 
+    // // Fetch image associated with the tab
+    // chrome.tabs.captureVisibleTab(null, { format: "png" }, function (image) {
+    //   setFormData(prevState => ({
+    //     ...prevState,
+    //     image // Set image data URI directly
+    //   }));
+    // });
+
     // Fetch the collections
-    console.log("fetching collections")
     fetchCollections();
+
 
   }, []);
   const fetchCollections = async () => {
@@ -115,8 +123,11 @@ function App() {
         <div className='top'>
           <>
             <div className='head'>Add Bookmark</div>
-            <div className='title'>
-              <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} />
+            <div className='form-title'>
+              <div>{formData.image && <img src="https://images.unsplash.com/photo-1700981293090-f78b500fc92c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tab Screenshot" className="tab-image" style={{ width: "8rem" }} />}
+              </div><div className='input-title'>
+                <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} />
+              </div>
             </div>
             <div className='note'>
               <div className='label'>Note:</div>

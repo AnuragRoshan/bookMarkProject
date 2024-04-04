@@ -1,16 +1,17 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const BookmarkCard = ({ data }) => {
-  const { title, collection_name, url, date } = data;
+  const { bookmark_name, collection_name, url, created_on, tags } = data;
 
-  const getdate = (date) => {
-    const d = new Date(date);
+  const getdate = (created_on) => {
+    const d = new Date(created_on);
     return d.toDateString();
   };
 
-  const getTime = (date) => {
-    const d = new Date(date);
+  const getTime = (created_on) => {
+    const d = new Date(created_on);
     let hours = d.getHours();
     const minutes = d.getMinutes();
     const amOrPm = hours >= 12 ? "PM" : "AM";
@@ -21,20 +22,25 @@ const BookmarkCard = ({ data }) => {
 
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(title);
+  const [editedTitle, setEditedTitle] = useState(bookmark_name);
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Save edited title
     setIsEditing(false);
+    await axios.post("http://localhost:5000/api/v1/bookmark/rename", {
+      user_id: "6608f182472c4f5e0dda23b7",
+      url,
+      new_bookmark_name: editedTitle,
+    });
   };
 
   const handleCancel = () => {
     // Cancel editing
-    setEditedTitle(title);
+    setEditedTitle(bookmark_name);
     setIsEditing(false);
   };
 
@@ -56,7 +62,7 @@ const BookmarkCard = ({ data }) => {
         {isEditing ? (
           <input type="text" value={editedTitle} onChange={handleTitleChange} />
         ) : (
-          <div>{title}</div>
+          <div>{editedTitle}</div>
         )}
         <div>
           {isHovered && !isEditing && (
@@ -89,8 +95,23 @@ const BookmarkCard = ({ data }) => {
       <div className="bookmark-url">
         URL : <Link to={url}>{url}</Link>
       </div>
-      <div className="bookmark-date">{getdate(date)}</div>
-      <div className="bookmark-time">{getTime(date)}</div>
+      <div className="bookmark-tags">
+        {
+          // Tags
+          tags &&
+            tags.map((tag, index) => (
+              <>
+                <Link to={`/hello/${tag}`}>
+                  <div key={index} className="tag-selected">
+                    {tag}
+                  </div>
+                </Link>
+              </>
+            ))
+        }
+      </div>
+      <div className="bookmark-date">{getdate(created_on)}</div>
+      <div className="bookmark-time">{getTime(created_on)}</div>
     </div>
   );
 };
