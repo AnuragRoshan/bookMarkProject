@@ -4,10 +4,15 @@ import { Link } from "react-router-dom";
 import { IoBookmarksOutline, IoBookmarksSharp } from "react-icons/io5";
 import { FaRegFolder } from "react-icons/fa";
 import { IoIosFolder } from "react-icons/io";
+import { IoReload } from "react-icons/io5";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { MdOutlineFavorite } from "react-icons/md";
+
 import axios from "axios";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [rotate, setRotate] = useState(false); // State to manage rotation
   const toggle = () => setIsOpen(isOpen);
   const [activeLink, setActiveLink] = useState("/");
   const [collectionList, setcollectionList] = useState([]);
@@ -17,7 +22,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     getCollectionList();
-  }, []);
+  }, [rotate]);
 
   const getCollectionList = async () => {
     const user_id = "6608f182472c4f5e0dda23b7";
@@ -31,21 +36,13 @@ const Sidebar = () => {
     setcollectionList(data.data.collection_list);
   };
 
-  const menuItem = [
-    //   {
-    //     // bookmark/:origin/:id
-    //     path: "/bookmark/collection/collection1",
-    //     name: "collection1",
-    //   },
-    //   {
-    //     path: "bookmark/collection/collection2",
-    //     name: "collection2",
-    //   },
-    //   {
-    //     path: "bookmark/collection/collection3",
-    //     name: "collection3",
-    //   },
-  ];
+  const handleReloadClick = () => {
+    setRotate(true); // Start rotation
+    setTimeout(() => {
+      setRotate(false); // Stop rotation after a certain time
+    }, 1000); // Adjust time as needed
+    // Add your reload logic here
+  };
 
   return (
     <div className="container">
@@ -57,9 +54,9 @@ const Sidebar = () => {
             </div>
             <div>anurag15</div>
           </div>
-          {/* <div style={{ marginLeft: isOpen ? "50px" : "0px" }} className="bars">
-            <FaBars onClick={toggle} />
-          </div> */}
+          <div className="reload-ico" onClick={handleReloadClick}>
+            <IoReload className={rotate ? "rotate" : ""} />
+          </div>
         </div>
         <Link
           to={"/bookmark/allbokmarks/true"}
@@ -81,6 +78,28 @@ const Sidebar = () => {
             className="link_text"
           >
             All Bookmarks
+          </div>
+        </Link>
+        <Link
+          to={"/bookmark/allbokmarks/true"}
+          // key={}
+          className={activeLink === "Favorite" ? "active link" : "link"}
+          onClick={() => handleLinkClick("Favorite")}
+        >
+          {activeLink === "Favorite" ? (
+            <div className="icon">
+              <MdOutlineFavorite />
+            </div>
+          ) : (
+            <div className="icon">
+              <MdOutlineFavoriteBorder />
+            </div>
+          )}
+          <div
+            style={{ display: isOpen ? "block" : "none" }}
+            className="link_text"
+          >
+            Favorites
           </div>
         </Link>
         {collectionList && collectionList.length > 0 ? (

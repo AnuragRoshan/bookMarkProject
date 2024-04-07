@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import BookmarkCard from "../Components/BookmarkCard";
 import axios from "axios";
 import Home from "./Home";
+import { MdOutlineDelete } from "react-icons/md";
 
 const Collections = () => {
   const { origin, id } = useParams();
@@ -40,7 +41,12 @@ const Collections = () => {
   return (
     <div>
       {isloading ? (
-        <div style={{ height: "90vh", display: "flex" }}>
+        <div
+          style={{
+            height: "90vh",
+            display: "flex",
+          }}
+        >
           <div className="loader"></div>
         </div>
       ) : (
@@ -49,7 +55,12 @@ const Collections = () => {
             <Home id={id} />
           ) : (
             <>
-              <div className="bookmark-head">{id}</div>
+              <div className="bookmark-head">
+                <div>{id}</div>
+                <div className="delete-collection">
+                  <MdOutlineDelete />
+                </div>
+              </div>
               <div className="bookmark-card">
                 {bookmarkData.map((bookmark, index) => (
                   // <Link to={bookmark.url}>

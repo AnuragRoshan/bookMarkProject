@@ -1,6 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { MdOutlineDelete } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+import { CiSaveUp2 } from "react-icons/ci";
+import { MdOutlineCancel } from "react-icons/md";
 
 const BookmarkCard = ({ data }) => {
   const { bookmark_name, collection_name, url, created_on, tags } = data;
@@ -68,20 +72,20 @@ const BookmarkCard = ({ data }) => {
           {isHovered && !isEditing && (
             <div className="edit-delete-options">
               <div className="edit-btn" onClick={handleEdit}>
-                Edit
+                <CiEdit />
               </div>
               <div className="delete-btn" onclick={handleDelete}>
-                Delete
+                <MdOutlineDelete />
               </div>
             </div>
           )}
           {isEditing && (
             <div className="edit-options">
               <div className="save-btn" onClick={handleSave}>
-                Save
+                <CiSaveUp2 />
               </div>
               <div className="cancel-btn" onClick={handleCancel}>
-                Cancel
+                <MdOutlineCancel />
               </div>
             </div>
           )}
